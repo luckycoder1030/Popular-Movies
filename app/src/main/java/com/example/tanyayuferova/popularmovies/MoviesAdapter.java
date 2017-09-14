@@ -21,12 +21,29 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
 
     private List<Movie> data;
 
-    public class MoviesAdapterViewHolder extends RecyclerView.ViewHolder {
+    private final MoviesAdapterOnClickHandler onClickHandler;
+
+    public interface MoviesAdapterOnClickHandler {
+        void onClick(Movie movie);
+    }
+
+    public MoviesAdapter(MoviesAdapterOnClickHandler onClickHandler) {
+        this.onClickHandler = onClickHandler;
+    }
+
+    public class MoviesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected final ImageView movieIcon;
 
         public MoviesAdapterViewHolder(View itemView) {
             super(itemView);
             movieIcon = (ImageView) itemView.findViewById(R.id.iv_movie_icon);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            onClickHandler.onClick(data.get(adapterPosition));
         }
     }
 

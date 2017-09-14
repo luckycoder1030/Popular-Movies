@@ -1,5 +1,6 @@
 package com.example.tanyayuferova.popularmovies;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import com.example.tanyayuferova.popularmovies.utils.NetworkUtils.SortingParam;
 import java.net.URL;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.MoviesAdapterOnClickHandler {
 
     private RecyclerView moviesRV;
     private ProgressBar progressBar;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected MoviesAdapter moviesAdapter;
     protected int currentPage = 1;
     protected SortingParam currentSorting = SortingParam.POPULAR;
+    public static String EXTRA_MOVIE = "movie";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         moviesRV.setLayoutManager(layoutManager);
-        moviesAdapter = new MoviesAdapter();
+        moviesAdapter = new MoviesAdapter(this);
         moviesRV.setAdapter(moviesAdapter);
         refreshData(currentSorting);
     }
@@ -131,5 +133,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(Movie movie) {
+        Intent intent = new Intent(this, MovieDetails.class);
+        intent.putExtra(EXTRA_MOVIE, movie);
+        startActivity(intent);
     }
 }

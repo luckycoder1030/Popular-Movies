@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,11 @@ public class MoviesJsonUtils {
     private static String LIST_RESULTS = "results";
     private static String POSTER_PATH = "poster_path";
     private static String ID = "id";
+    private static String ORIGINAL_TITLE = "original_title";
+    private static String TITLE = "title";
+    private static String OVERVIEW = "overview";
+    private static String RELEASED_DATE = "release_date";
+    private static String VOTE_AVG = "vote_average";
 
     public static List<Movie> getMoviesDataFromJson(String json) throws JSONException {
         List<Movie> result = null;
@@ -31,6 +38,16 @@ public class MoviesJsonUtils {
 
             movie.setId(object.getString(ID));
             movie.setPosterPath(object.getString(POSTER_PATH));
+            movie.setTitle(object.getString(TITLE));
+            movie.setOverview(object.getString(OVERVIEW));
+            movie.setVoteAvg(object.getString(VOTE_AVG));
+            movie.setOriginalTitle(object.getString(ORIGINAL_TITLE));
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                movie.setReleasedDate(dateFormat.parse(object.getString(RELEASED_DATE)));
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
 
             result.add(movie);
         }
