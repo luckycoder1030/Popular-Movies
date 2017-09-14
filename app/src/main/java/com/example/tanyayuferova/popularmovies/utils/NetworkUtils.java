@@ -37,12 +37,12 @@ public class NetworkUtils {
         }
     }
 
-    public static URL buildUrl(SortingParam sort) {
+    public static URL buildUrl(SortingParam sort, int pageNumber) {
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendPath(sort.getId())
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
                 .appendQueryParameter(LANGUAGE_PARAM, LANGUAGE_DEFAULT)
-                .appendQueryParameter(PAGE_PARAM, "1")
+                .appendQueryParameter(PAGE_PARAM, String.valueOf(pageNumber))
                 .build();
         URL url = null;
         try {

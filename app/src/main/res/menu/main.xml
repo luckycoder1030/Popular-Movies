@@ -2,8 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/refresh_action"
-        android:title="@string/refresh"
-        app:showAsAction="ifRoom"
+        android:id="@+id/load_more_action"
+        android:title="@string/load_more"
+        app:showAsAction="always"
         android:orderInCategory="1"/>
+    <item
+        android:id="@+id/popular_action"
+        android:title="@string/popular"
+        app:showAsAction="collapseActionView"
+        android:orderInCategory="2"/>
+    <item
+        android:id="@+id/top_rated_action"
+        android:title="@string/top_rated"
+        app:showAsAction="collapseActionView"
+        android:orderInCategory="3"/>
 </menu>

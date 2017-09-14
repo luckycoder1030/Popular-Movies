@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,6 +52,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
 
     public void setData(List<Movie> data) {
         this.data = data;
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<Movie> data) {
+        if(this.data == null)
+            this.data = new ArrayList<>();
+        this.data.addAll(data);
         notifyDataSetChanged();
     }
 }

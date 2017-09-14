@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView errorMessage;
     protected MoviesAdapter moviesAdapter;
+    protected int currentPage = 1;
+    protected SortingParam currentSorting = SortingParam.POPULAR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +42,21 @@ public class MainActivity extends AppCompatActivity {
         moviesRV.setLayoutManager(layoutManager);
         moviesAdapter = new MoviesAdapter();
         moviesRV.setAdapter(moviesAdapter);
-        refreshData();
+        refreshData(currentSorting);
     }
 
-    protected void refreshData() {
+    protected void refreshData(SortingParam sortingParam) {
         showDataView();
+        currentPage = 1;
         moviesAdapter.setData(null);
-        SortingParam param = SortingParam.POPULAR;
-        new FetchMoviesTask().execute(param);
+        new FetchMoviesTask().execute(sortingParam);
+    }
+
+    protected void loadMoreData(SortingParam sortingParam) {
+        /* Page must be less than or equal to 1000 */
+        if(++currentPage > 1000)
+            return;
+        new FetchMoviesTask().execute(sortingParam);
     }
 
     public class FetchMoviesTask extends AsyncTask<SortingParam, Void, List<Movie>> {
@@ -65,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             SortingParam sort = params[0];
-            URL url = NetworkUtils.buildUrl(sort);
+            URL url = NetworkUtils.buildUrl(sort, currentPage);
 
             try {
                 String json = NetworkUtils.getResponseFromHttpUrl(url);
@@ -83,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
             if (data != null) {
                 showDataView();
-                moviesAdapter.setData(data);
+                moviesAdapter.addData(data);
             } else {
                 showErrorMessage();
             }
@@ -109,8 +118,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int selectedId = item.getItemId();
         switch (selectedId) {
-            case R.id.refresh_action :
-                refreshData();
+            case R.id.popular_action :
+                currentSorting = SortingParam.POPULAR;
+                refreshData(currentSorting);
+                return true;
+            case R.id.top_rated_action :
+                currentSorting = SortingParam.TOP_RATED;
+                refreshData(currentSorting);
+                return true;
+            case R.id.load_more_action :
+                loadMoreData(currentSorting);
                 return true;
         }
         return super.onOptionsItemSelected(item);
