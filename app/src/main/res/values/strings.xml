@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+    <string name="error_message">Failed when loading data. Please try again.</string>
+    <string name="refresh">Refresh</string>
 </resources>
