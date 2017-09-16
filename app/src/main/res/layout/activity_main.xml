@@ -15,6 +15,7 @@
         android:id="@+id/tv_error_message"
         android:visibility="invisible"
         android:textSize="20sp"
+        android:padding="10dp"
         android:text="@string/error_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

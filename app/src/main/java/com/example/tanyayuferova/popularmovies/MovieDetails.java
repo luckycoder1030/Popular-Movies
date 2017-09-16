@@ -2,6 +2,7 @@ package com.example.tanyayuferova.popularmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +12,9 @@ import java.text.SimpleDateFormat;
 
 import static com.example.tanyayuferova.popularmovies.MainActivity.EXTRA_MOVIE;
 
+/**
+ * This activity displays detailed movie information
+ */
 public class MovieDetails extends AppCompatActivity {
 
     private TextView titleTextView;
@@ -20,6 +24,7 @@ public class MovieDetails extends AppCompatActivity {
     private ImageView posterImageView;
     private TextView starsTextView;
 
+    /* Current item */
     protected Movie movie;
 
     @Override
@@ -39,6 +44,10 @@ public class MovieDetails extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets movie data in fields
+     * @param movie
+     */
     protected void setMovie(Movie movie) {
         this.movie = movie;
         titleTextView.setText(movie.getFullTitle());
@@ -51,10 +60,14 @@ public class MovieDetails extends AppCompatActivity {
 
         Double doubleVoteAvg = movie.getDoubleVoteAvg();
         voteAvgTextView.setText(String.format("%1.1f", doubleVoteAvg));
-        setVoteStarsText(doubleVoteAvg);
+        starsTextView.setText(getVoteStarsText(doubleVoteAvg));
     }
 
-    protected void setVoteStarsText(Double doubleVoteAvg){
+    /**
+     * @param doubleVoteAvg average vote
+     * @return id of string which shows how many stars the movie has
+     */
+    protected int getVoteStarsText(Double doubleVoteAvg){
         int stars = R.string.stars_0;
         if(doubleVoteAvg >= 9.5)
             stars = R.string.stars_10;
@@ -76,6 +89,16 @@ public class MovieDetails extends AppCompatActivity {
             stars = R.string.stars_2;
         else if(doubleVoteAvg >= 0.5)
             stars = R.string.stars_1;
-        starsTextView.setText(stars);
+        return stars;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            /* To prevent MainActivity reload data*/
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

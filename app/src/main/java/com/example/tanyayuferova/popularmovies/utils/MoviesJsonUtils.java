@@ -26,6 +26,12 @@ public class MoviesJsonUtils {
     private static String RELEASED_DATE = "release_date";
     private static String VOTE_AVG = "vote_average";
 
+    /**
+     * Reads json string and creates movies list
+     * @param json
+     * @return
+     * @throws JSONException
+     */
     public static List<Movie> getMoviesDataFromJson(String json) throws JSONException {
         List<Movie> result = null;
 

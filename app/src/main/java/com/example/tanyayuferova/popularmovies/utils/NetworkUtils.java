@@ -17,11 +17,14 @@ public class NetworkUtils {
 
     private static String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static String API_KEY_PARAM = "api_key";
-    private static String API_KEY = "0de0b107ebea0f1fa487a5afa259cac1"; //todo API_KEY
+    private static String API_KEY = ""; //FIXME API_KEY
     private static String LANGUAGE_PARAM = "language";
     private static String LANGUAGE_DEFAULT = "en-US";
     private static String PAGE_PARAM = "page";
 
+    /**
+     * Movies sorting type
+     */
     public enum SortingParam {
         POPULAR("popular"),
         TOP_RATED("top_rated");
@@ -37,6 +40,12 @@ public class NetworkUtils {
         }
     }
 
+    /**
+     * Builds url for themoviedb api
+     * @param sort
+     * @param pageNumber
+     * @return
+     */
     public static URL buildUrl(SortingParam sort, int pageNumber) {
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendPath(sort.getId())

@@ -21,13 +21,18 @@ import com.example.tanyayuferova.popularmovies.utils.NetworkUtils.SortingParam;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * This activity is responsible to show movies list
+ */
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.MoviesAdapterOnClickHandler {
 
     private RecyclerView moviesRV;
     private ProgressBar progressBar;
     private TextView errorMessage;
     protected MoviesAdapter moviesAdapter;
+    /* Last loaded page */
     protected int currentPage = 1;
+    /* Last selected sorting type */
     protected SortingParam currentSorting = SortingParam.POPULAR;
     public static String EXTRA_MOVIE = "movie";
 
@@ -47,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         refreshData(currentSorting);
     }
 
+    /**
+     * Load and show new movies list
+     * @param sortingParam sorting type
+     */
     protected void refreshData(SortingParam sortingParam) {
         showDataView();
         currentPage = 1;
@@ -54,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         new FetchMoviesTask().execute(sortingParam);
     }
 
+    /**
+     * Load the next page of movies list
+     * @param sortingParam sorting type
+     */
     protected void loadMoreData(SortingParam sortingParam) {
         /* Page must be less than or equal to 1000 */
         if(++currentPage > 1000)
@@ -61,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         new FetchMoviesTask().execute(sortingParam);
     }
 
+    /**
+     * Async task loads movies data
+     */
     public class FetchMoviesTask extends AsyncTask<SortingParam, Void, List<Movie>> {
 
         @Override
@@ -100,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             }
         }
     }
+
     protected void showDataView() {
         errorMessage.setVisibility(View.INVISIBLE);
         moviesRV.setVisibility(View.VISIBLE);
@@ -124,10 +141,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
                 currentSorting = SortingParam.POPULAR;
                 refreshData(currentSorting);
                 return true;
+
             case R.id.top_rated_action :
                 currentSorting = SortingParam.TOP_RATED;
                 refreshData(currentSorting);
                 return true;
+
             case R.id.load_more_action :
                 loadMoreData(currentSorting);
                 return true;

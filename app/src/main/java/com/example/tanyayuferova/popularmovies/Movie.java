@@ -12,15 +12,18 @@ import java.util.Date;
  * Created by Tanya Yuferova on 9/13/2017.
  */
 
+/**
+ * Movie entity
+ */
 public class Movie implements Parcelable {
 
-    String id;
-    String posterPath;
-    String title;
-    String voteAvg;
-    Date releasedDate;
-    String overview;
-    String originalTitle;
+    private String id;
+    private String posterPath;
+    private String title;
+    private String voteAvg;
+    private Date releasedDate;
+    private String overview;
+    private String originalTitle;
 
     public Movie() {
     }
@@ -85,6 +88,9 @@ public class Movie implements Parcelable {
         this.originalTitle = originalTitle;
     }
 
+    /**
+     * @return title and the original title if they differ, else title only
+     */
     public String getFullTitle() {
         if (title != null) {
             if(originalTitle != null && !title.equals(originalTitle))
@@ -98,6 +104,11 @@ public class Movie implements Parcelable {
         return Double.parseDouble(voteAvg);
     }
 
+    /**
+     * Builds poster url string
+     * @param size poster size
+     * @return
+     */
     public String getFullPosterPath(String size) {
         String BASE_URL = "https://image.tmdb.org/t/p/";
         Uri uri = Uri.parse(BASE_URL).buildUpon()
@@ -122,6 +133,7 @@ public class Movie implements Parcelable {
         array[6] = originalTitle;
         parcel.writeStringArray(array);
     }
+
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         public Movie createFromParcel(Parcel in) {
             return new Movie(in);

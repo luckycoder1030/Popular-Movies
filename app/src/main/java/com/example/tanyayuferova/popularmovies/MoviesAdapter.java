@@ -67,11 +67,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
         return data==null ? 0 : data.size();
     }
 
+    /**
+     * Sets new data list
+     * @param data
+     */
     public void setData(List<Movie> data) {
         this.data = data;
         notifyDataSetChanged();
     }
 
+    /**
+     * Add new data to the existing list
+     * @param data
+     */
     public void addData(List<Movie> data) {
         if(this.data == null)
             this.data = new ArrayList<>();
