@@ -2,6 +2,9 @@ package com.example.tanyayuferova.popularmovies;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,7 +27,9 @@ import java.util.List;
 /**
  * This activity is responsible to show movies list
  */
-public class MainActivity extends AppCompatActivity implements MoviesAdapter.MoviesAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity
+        implements MoviesAdapter.MoviesAdapterOnClickHandler,
+        LoaderManager.LoaderCallbacks<List<Movie>> {
 
     private RecyclerView moviesRV;
     private ProgressBar progressBar;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     /* Last selected sorting type */
     protected SortingParam currentSorting = SortingParam.POPULAR;
     public static String EXTRA_MOVIE = "movie";
+    private static final int MOVIES_LOADER_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,72 +55,26 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         moviesRV.setLayoutManager(layoutManager);
         moviesAdapter = new MoviesAdapter(this);
         moviesRV.setAdapter(moviesAdapter);
-        refreshData(currentSorting);
+        getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, null, MainActivity.this);
     }
 
     /**
-     * Load and show new movies list
-     * @param sortingParam sorting type
+     * Load new movies list
      */
-    protected void refreshData(SortingParam sortingParam) {
-        showDataView();
+    protected void refreshData() {
         currentPage = 1;
         moviesAdapter.setData(null);
-        new FetchMoviesTask().execute(sortingParam);
+        getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, null, MainActivity.this);
     }
 
     /**
      * Load the next page of movies list
-     * @param sortingParam sorting type
      */
-    protected void loadMoreData(SortingParam sortingParam) {
+    protected void loadMoreData() {
         /* Page must be less than or equal to 1000 */
         if(++currentPage > 1000)
             return;
-        new FetchMoviesTask().execute(sortingParam);
-    }
-
-    /**
-     * Async task loads movies data
-     */
-    public class FetchMoviesTask extends AsyncTask<SortingParam, Void, List<Movie>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Movie> doInBackground(SortingParam... params) {
-            if (params.length == 0) {
-                return null;
-            }
-
-            SortingParam sort = params[0];
-            URL url = NetworkUtils.buildUrl(sort, currentPage);
-
-            try {
-                String json = NetworkUtils.getResponseFromHttpUrl(url);
-                List<Movie> data = MoviesJsonUtils.getMoviesDataFromJson(json);
-                return data;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> data) {
-            progressBar.setVisibility(View.INVISIBLE);
-            if (data != null) {
-                showDataView();
-                moviesAdapter.addData(data);
-            } else {
-                showErrorMessage();
-            }
-        }
+        getSupportLoaderManager().getLoader(MOVIES_LOADER_ID).forceLoad();
     }
 
     protected void showDataView() {
@@ -139,16 +99,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         switch (selectedId) {
             case R.id.popular_action :
                 currentSorting = SortingParam.POPULAR;
-                refreshData(currentSorting);
+                refreshData();
                 return true;
 
             case R.id.top_rated_action :
                 currentSorting = SortingParam.TOP_RATED;
-                refreshData(currentSorting);
+                refreshData();
                 return true;
 
             case R.id.load_more_action :
-                loadMoreData(currentSorting);
+                loadMoreData();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -159,5 +119,57 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         Intent intent = new Intent(this, MovieDetails.class);
         intent.putExtra(EXTRA_MOVIE, movie);
         startActivity(intent);
+    }
+
+    @Override
+    public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<List<Movie>>(this) {
+
+            List<Movie> data = null;
+
+            @Override
+            protected void onStartLoading() {
+                if (data != null) {
+                    deliverResult(data);
+                } else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    forceLoad();
+                }
+            }
+            @Override
+            public List<Movie> loadInBackground() {
+                URL url = NetworkUtils.buildUrl(currentSorting, currentPage);
+
+                try {
+                    String json = NetworkUtils.getResponseFromHttpUrl(url);
+                    return MoviesJsonUtils.getMoviesDataFromJson(json);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            public void deliverResult(List<Movie> data) {
+                this.data = data;
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+        progressBar.setVisibility(View.INVISIBLE);
+        if (data != null) {
+            showDataView();
+            moviesAdapter.addData(data);
+        } else {
+            showErrorMessage();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Movie>> loader) {
+
     }
 }
