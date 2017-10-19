@@ -1,4 +1,4 @@
-package com.example.tanyayuferova.popularmovies;
+package com.example.tanyayuferova.popularmovies.entities;
 
 import android.net.Uri;
 import android.os.Parcel;
@@ -6,7 +6,9 @@ import android.os.Parcelable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Tanya Yuferova on 9/13/2017.
@@ -24,6 +26,10 @@ public class Movie implements Parcelable {
     private Date releasedDate;
     private String overview;
     private String originalTitle;
+    private String tagline;
+    private Boolean isFavorite = false;
+    private List<Trailer> trailers;
+    private List<Review> reviews;
 
     public Movie() {
     }
@@ -88,6 +94,38 @@ public class Movie implements Parcelable {
         this.originalTitle = originalTitle;
     }
 
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public List<Trailer> getTrailers() {
+        return trailers;
+    }
+
+    public void setTrailers(List<Trailer> trailers) {
+        this.trailers = trailers;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Boolean getFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        isFavorite = favorite;
+    }
+
     /**
      * @return title and the original title if they differ, else title only
      */
@@ -123,7 +161,7 @@ public class Movie implements Parcelable {
     }
 
     public void writeToParcel(Parcel parcel, int flags) {
-        String[] array = new String[7];
+        String[] array = new String[8];
         array[0] = id;
         array[1] = posterPath;
         array[2] = title;
@@ -131,7 +169,11 @@ public class Movie implements Parcelable {
         array[4] = new SimpleDateFormat().format(releasedDate);
         array[5] = overview;
         array[6] = originalTitle;
+        array[7] = tagline;
         parcel.writeStringArray(array);
+        parcel.writeList(trailers);
+        parcel.writeList(reviews);
+        parcel.writeByte((byte) (isFavorite ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
@@ -145,7 +187,7 @@ public class Movie implements Parcelable {
     };
 
     private Movie(Parcel parcel) {
-        String[] array = new String[7];
+        String[] array = new String[8];
         parcel.readStringArray(array);
         id = array[0];
         posterPath = array[1];
@@ -159,5 +201,21 @@ public class Movie implements Parcelable {
         }
         overview = array[5];
         originalTitle = array[6];
+        tagline = array[7];
+
+        isFavorite = parcel.readByte() == 1;
+
+        trailers = new ArrayList<>();
+        parcel.readList(trailers, Trailer.class.getClassLoader());
+
+        reviews = new ArrayList<>();
+        parcel.readList(reviews, Review.class.getClassLoader());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Movie)
+            return this.getId().equals(((Movie) obj).getId());
+        return super.equals(obj);
     }
 }

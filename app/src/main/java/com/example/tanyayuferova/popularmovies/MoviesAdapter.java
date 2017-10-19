@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.tanyayuferova.popularmovies.entities.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -85,5 +86,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
             this.data = new ArrayList<>();
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+    /**
+     * Updates item in list
+     * @param item
+     */
+    public void updateItem(Movie item) {
+        int position = data.indexOf(item);
+        if (position>0){
+            data.set(position, item);
+            notifyItemChanged(position);
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.example.tanyayuferova.popularmovies;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -16,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.example.tanyayuferova.popularmovies.entities.Movie;
 import com.example.tanyayuferova.popularmovies.utils.MoviesJsonUtils;
 import com.example.tanyayuferova.popularmovies.utils.NetworkUtils;
 import com.example.tanyayuferova.popularmovies.utils.NetworkUtils.SortingParam;
@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     protected SortingParam currentSorting = SortingParam.POPULAR;
     public static String EXTRA_MOVIE = "movie";
     private static final int MOVIES_LOADER_ID = 1;
+    protected  static final int MOVIE_DETAILS_REQUEST_CODE = 5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +120,19 @@ public class MainActivity extends AppCompatActivity
     public void onClick(Movie movie) {
         Intent intent = new Intent(this, MovieDetails.class);
         intent.putExtra(EXTRA_MOVIE, movie);
-        startActivity(intent);
+        startActivityForResult(intent, MOVIE_DETAILS_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == MOVIE_DETAILS_REQUEST_CODE && resultCode == RESULT_OK) {
+            /* After viewing movie details we need to update the item in the list, because we could
+            change some movie data (for example favorite movie) or load additional data that could be
+            useful later*/
+            Movie movie = data.getParcelableExtra(EXTRA_MOVIE);
+            moviesAdapter.updateItem(movie);
+        }
     }
 
     @Override
@@ -138,7 +152,7 @@ public class MainActivity extends AppCompatActivity
             }
             @Override
             public List<Movie> loadInBackground() {
-                URL url = NetworkUtils.buildUrl(currentSorting, currentPage);
+                URL url = NetworkUtils.buildMoviesUrl(currentSorting, currentPage);
 
                 try {
                     String json = NetworkUtils.getResponseFromHttpUrl(url);
