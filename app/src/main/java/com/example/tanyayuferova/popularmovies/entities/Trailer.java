@@ -21,6 +21,10 @@ public class Trailer implements Parcelable {
     public Trailer() {
     }
 
+    public String getDescription() {
+        return String.format("%1$s (%2$s)", name, language.toUpperCase());
+    }
+
     public String getId() {
         return id;
     }

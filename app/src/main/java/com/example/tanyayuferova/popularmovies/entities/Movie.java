@@ -138,6 +138,13 @@ public class Movie implements Parcelable {
         return originalTitle;
     }
 
+    /**
+     * @return title and and year of release
+     */
+    public String getDescription() {
+        return String.format("%1$s (%2$tY)", title, releasedDate);
+    }
+
     public Double getDoubleVoteAvg() {
         return Double.parseDouble(voteAvg);
     }
@@ -173,7 +180,7 @@ public class Movie implements Parcelable {
         parcel.writeStringArray(array);
         parcel.writeList(trailers);
         parcel.writeList(reviews);
-        parcel.writeByte((byte) (isFavorite ? 1 : 0));
+        //parcel.writeByte((byte) (isFavorite ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
@@ -203,7 +210,7 @@ public class Movie implements Parcelable {
         originalTitle = array[6];
         tagline = array[7];
 
-        isFavorite = parcel.readByte() == 1;
+        //isFavorite = parcel.readByte() == 1;
 
         trailers = new ArrayList<>();
         parcel.readList(trailers, Trailer.class.getClassLoader());

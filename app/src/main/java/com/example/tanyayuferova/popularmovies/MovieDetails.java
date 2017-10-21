@@ -1,5 +1,6 @@
 package com.example.tanyayuferova.popularmovies;
 
+import android.databinding.DataBindingUtil;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -9,7 +10,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.tanyayuferova.popularmovies.databinding.ActivityMovieDetailsBinding;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
+import com.example.tanyayuferova.popularmovies.entities.Review;
+import com.example.tanyayuferova.popularmovies.entities.Trailer;
 import com.example.tanyayuferova.popularmovies.utils.MoviesJsonUtils;
 import com.example.tanyayuferova.popularmovies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -26,12 +30,7 @@ public class MovieDetails extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Movie> {
 
     private static final int DETAILS_MOVIE_LOADER_ID = 2;
-    private TextView titleTextView;
-    private TextView overviewTextView;
-    private TextView voteAvgTextView;
-    private TextView releasedDateTextView;
-    private ImageView posterImageView;
-    private TextView starsTextView;
+    private ActivityMovieDetailsBinding binding;
 
     /* Current item */
     protected Movie movie;
@@ -41,13 +40,7 @@ public class MovieDetails extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         setResult(RESULT_OK, getIntent());
-
-        titleTextView = (TextView) findViewById(R.id.tv_title);
-        overviewTextView = (TextView) findViewById(R.id.tv_overview);
-        voteAvgTextView = (TextView) findViewById(R.id.tv_vote_avg);
-        releasedDateTextView = (TextView) findViewById(R.id.tv_released_date);
-        posterImageView = (ImageView) findViewById(R.id.iv_poster);
-        starsTextView = (TextView) findViewById(R.id.tv_vote_starts);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
 
         if(getIntent().hasExtra(EXTRA_MOVIE)) {
             displayMovieData((Movie) getIntent().getParcelableExtra(EXTRA_MOVIE));
@@ -69,17 +62,12 @@ public class MovieDetails extends AppCompatActivity
      */
     protected void displayMovieData(Movie movie) {
         this.movie = movie;
-        titleTextView.setText(movie.getFullTitle());
-        overviewTextView.setText(movie.getOverview());
-        if(movie.getReleasedDate() != null) {
-            releasedDateTextView.setText(R.string.release_date);
-            releasedDateTextView.append(new SimpleDateFormat(" MMMM dd, yyyy").format(movie.getReleasedDate()));
-        }
-        Picasso.with(this).load(movie.getFullPosterPath()).into(posterImageView);
-
+        binding.tvTitle.setText(movie.getDescription());
+        binding.tvOverview.setText(movie.getOverview());
+        Picasso.with(this).load(movie.getFullPosterPath()).into(binding.ivPoster);
         Double doubleVoteAvg = movie.getDoubleVoteAvg();
-        voteAvgTextView.setText(String.format("%1.1f", doubleVoteAvg));
-        starsTextView.setText(getVoteStarsText(doubleVoteAvg));
+        binding.tvVoteAvg.setText(String.format("%1.1f", doubleVoteAvg));
+        binding.tvVoteStarts.setText(getVoteStarsText(doubleVoteAvg));
     }
 
     /**
@@ -87,7 +75,29 @@ public class MovieDetails extends AppCompatActivity
      * @param movie
      */
     protected void displayAdditionalMovieData(Movie movie) {
+        binding.tvTagLine.setText(movie.getTagline());
+        String trailersCaption = String.format(getString(R.string.trailers_caption),
+                movie.getTrailers()==null ? 0 :movie.getTrailers().size());
+        String reviewsCaption = String.format(getString(R.string.reviews_caption),
+                movie.getReviews()==null ? 0 :movie.getReviews().size());
+        binding.tvTrailersCaption.setText(trailersCaption);
+        binding.tvReviewsCaption.setText(reviewsCaption);
 
+        if(movie.getTrailers() != null && movie.getTrailers().size()>0) {
+            setTrailerData(movie.getTrailers().get(1));
+        }
+        if(movie.getReviews() != null && movie.getReviews().size()>0) {
+            setReviewData(movie.getReviews().get(1));
+        }
+    }
+
+    protected void setTrailerData(Trailer trailer) {
+        binding.tvTrailerName.setText(trailer.getDescription());
+    }
+
+    protected void setReviewData(Review review) {
+        binding.tvReviewAuthor.setText(String.format(getString(R.string.author_caption), review.getAuthor()));
+        binding.tvReviewContent.setText(review.getContent());
     }
 
     /**

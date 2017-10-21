@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">Popular Movies</string>
     <string name="error_message">Failed when loading data. Please try again.</string>
     <string name="popular">The most popular</string>
@@ -16,4 +16,9 @@
     <string name="stars_8">★★★★★★★★☆☆</string>
     <string name="stars_9">★★★★★★★★★☆</string>
     <string name="stars_10">★★★★★★★★★★</string>
+    <string name="favorite">Favorite</string>
+    <string name="trailer_description"><xliff:g id="count">%1s</xliff:g> (<xliff:g id="count">%2s</xliff:g>)</string>
+    <string name="trailers_caption">Trailers (<xliff:g id="count">%1d</xliff:g>)</string>
+    <string name="reviews_caption">Reviews (<xliff:g id="count">%1d</xliff:g>)</string>
+    <string name="author_caption">Author: <xliff:g id="count">%1s</xliff:g></string>
 </resources>
