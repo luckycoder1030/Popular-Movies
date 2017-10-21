@@ -1,4 +1,4 @@
-package com.example.tanyayuferova.popularmovies;
+package com.example.tanyayuferova.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.tanyayuferova.popularmovies.R;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
 import com.squareup.picasso.Picasso;
 

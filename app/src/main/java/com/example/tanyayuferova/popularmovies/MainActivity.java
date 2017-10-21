@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.example.tanyayuferova.popularmovies.adapters.MoviesAdapter;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
 import com.example.tanyayuferova.popularmovies.utils.MoviesJsonUtils;
 import com.example.tanyayuferova.popularmovies.utils.NetworkUtils;

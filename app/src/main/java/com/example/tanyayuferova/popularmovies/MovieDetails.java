@@ -1,5 +1,6 @@
 package com.example.tanyayuferova.popularmovies;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -7,8 +8,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.View;
 
 import com.example.tanyayuferova.popularmovies.databinding.ActivityMovieDetailsBinding;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
@@ -84,20 +84,20 @@ public class MovieDetails extends AppCompatActivity
         binding.tvReviewsCaption.setText(reviewsCaption);
 
         if(movie.getTrailers() != null && movie.getTrailers().size()>0) {
-            setTrailerData(movie.getTrailers().get(1));
+            setTrailerData(movie.getTrailers().get(0));
         }
         if(movie.getReviews() != null && movie.getReviews().size()>0) {
-            setReviewData(movie.getReviews().get(1));
+            setReviewData(movie.getReviews().get(0));
         }
     }
 
     protected void setTrailerData(Trailer trailer) {
-        binding.tvTrailerName.setText(trailer.getDescription());
+        binding.trailer.tvTrailerName.setText(trailer.getDescription());
     }
 
     protected void setReviewData(Review review) {
-        binding.tvReviewAuthor.setText(String.format(getString(R.string.author_caption), review.getAuthor()));
-        binding.tvReviewContent.setText(review.getContent());
+        binding.review.tvReviewAuthor.setText(review.getAuthor());
+        binding.review.tvReviewContent.setText(review.getContent());
     }
 
     /**
@@ -201,5 +201,17 @@ public class MovieDetails extends AppCompatActivity
     @Override
     public void onLoaderReset(Loader<Movie> loader) {
 
+    }
+
+    public void trailersCaptionOnClick(View view) {
+        Intent intent = new Intent(this, TrailersActivity.class);
+        intent.putExtra(MainActivity.EXTRA_MOVIE, movie);
+        startActivity(intent);
+    }
+
+    public void reviewsCaptionOnClick(View view) {
+        Intent intent = new Intent(this, ReviewsActivity.class);
+        intent.putExtra(MainActivity.EXTRA_MOVIE, movie);
+        startActivity(intent);
     }
 }
