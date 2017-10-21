@@ -25,6 +25,8 @@ public class NetworkUtils {
     private static String LANGUAGE_PARAM = "language";
     private static String LANGUAGE_DEFAULT = "en-US";
     private static String PAGE_PARAM = "page";
+    private static String YOU_TUBE_WATCH_URL="http://www.youtube.com/watch";
+    private static String YOU_TUBE_VIDEO_PARAM="v";
 
     /**
      * Movies sorting type
@@ -156,5 +158,11 @@ public class NetworkUtils {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+    public static Uri getYouTubeVideoUri(String videoKey) {
+        return Uri.parse(YOU_TUBE_WATCH_URL).buildUpon()
+                .appendQueryParameter(YOU_TUBE_VIDEO_PARAM, videoKey)
+                .build();
     }
 }

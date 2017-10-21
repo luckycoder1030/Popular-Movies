@@ -1,5 +1,6 @@
 package com.example.tanyayuferova.popularmovies;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import com.example.tanyayuferova.popularmovies.adapters.TrailersAdapter;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
 import com.example.tanyayuferova.popularmovies.entities.Trailer;
+import com.example.tanyayuferova.popularmovies.utils.NetworkUtils;
 
 import static com.example.tanyayuferova.popularmovies.MainActivity.EXTRA_MOVIE;
 
@@ -36,7 +38,11 @@ public class TrailersActivity extends AppCompatActivity
 
     @Override
     public void onClick(Trailer trailer) {
-
+        switch (trailer.getSite()){
+            case "YouTube":
+                startActivity(new Intent(Intent.ACTION_VIEW, NetworkUtils.getYouTubeVideoUri(trailer.getKey())));
+                break;
+        }
     }
 
     @Override

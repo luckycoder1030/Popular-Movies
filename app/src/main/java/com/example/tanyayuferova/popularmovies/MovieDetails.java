@@ -54,6 +54,7 @@ public class MovieDetails extends AppCompatActivity
         else
             displayAdditionalMovieData(movie);
 
+        setTrailerOnClickListener();
     }
 
     /**
@@ -213,5 +214,21 @@ public class MovieDetails extends AppCompatActivity
         Intent intent = new Intent(this, ReviewsActivity.class);
         intent.putExtra(MainActivity.EXTRA_MOVIE, movie);
         startActivity(intent);
+    }
+
+    protected void setTrailerOnClickListener() {
+        findViewById(R.id.trailer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(movie.getTrailers()==null || movie.getTrailers().size()<=0)
+                    return;
+                Trailer trailer = movie.getTrailers().get(0);
+                switch (trailer.getSite()){
+                    case "YouTube":
+                        startActivity(new Intent(Intent.ACTION_VIEW, NetworkUtils.getYouTubeVideoUri(trailer.getKey())));
+                        break;
+                }
+            }
+        });
     }
 }
