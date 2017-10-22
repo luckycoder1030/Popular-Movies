@@ -24,9 +24,8 @@
             app:layout_constraintStart_toEndOf="@+id/iv_review_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tv_review_content"
-            android:textColor="@color/colorPrimaryDark"
-            tools:text="Author"
-            android:textSize="18sp" />
+            style="@style/ItemDescription"
+            tools:text="Author"/>
 
         <TextView
             android:id="@+id/tv_review_content"

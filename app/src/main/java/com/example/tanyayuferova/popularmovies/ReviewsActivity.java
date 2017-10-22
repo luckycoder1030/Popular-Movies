@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.tanyayuferova.popularmovies.adapters.ReviewsAdapter;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
@@ -30,6 +31,10 @@ public class ReviewsActivity extends AppCompatActivity {
         adapter = new ReviewsAdapter();
         adapter.setData(movie.getReviews());
         reviewsRV.setAdapter(adapter);
+
+        String reviewsCaption = String.format(getString(R.string.reviews_caption),
+                movie.getReviews() == null ? 0 : movie.getReviews().size());
+        ((TextView) findViewById(R.id.tv_reviews_caption)).setText(reviewsCaption);
     }
 
     @Override

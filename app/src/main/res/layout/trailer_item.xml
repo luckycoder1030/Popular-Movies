@@ -24,8 +24,7 @@
             app:layout_constraintStart_toEndOf="@+id/iv_play_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="parent"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
+            style="@style/ItemDescription"
             tools:text="Trailer name (ENG)" />
     </android.support.constraint.ConstraintLayout>
 </layout>

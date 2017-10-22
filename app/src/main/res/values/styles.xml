@@ -26,4 +26,14 @@
         <item name="android:paddingEnd">10dp</item>
     </style>
 
+    <style name="TitleCaption">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="ItemDescription">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

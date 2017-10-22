@@ -134,9 +134,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/trailers_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:padding="10dp"
-                android:textStyle="bold"
-                android:textSize="18sp"
+                style="@style/TitleCaption"
                 android:clickable="true"
                 android:onClick="trailersCaptionOnClick"
                 tools:text="@string/trailers_caption" />
@@ -166,9 +164,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/reviews_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:padding="10dp"
-                android:textStyle="bold"
-                android:textSize="18sp"
+                style="@style/TitleCaption"
                 android:clickable="true"
                 android:onClick="reviewsCaptionOnClick"
                 tools:text="@string/reviews_caption" />

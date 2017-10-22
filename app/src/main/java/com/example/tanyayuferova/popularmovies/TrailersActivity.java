@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.tanyayuferova.popularmovies.adapters.TrailersAdapter;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
@@ -34,11 +35,15 @@ public class TrailersActivity extends AppCompatActivity
         adapter = new TrailersAdapter(this);
         adapter.setData(movie.getTrailers());
         trailersRV.setAdapter(adapter);
+
+        String trailersCaption = String.format(getString(R.string.trailers_caption),
+                movie.getTrailers() == null ? 0 : movie.getTrailers().size());
+        ((TextView) findViewById(R.id.tv_trailers_caption)).setText(trailersCaption);
     }
 
     @Override
     public void onClick(Trailer trailer) {
-        switch (trailer.getSite()){
+        switch (trailer.getSite()) {
             case "YouTube":
                 startActivity(new Intent(Intent.ACTION_VIEW, NetworkUtils.getYouTubeVideoUri(trailer.getKey())));
                 break;
