@@ -35,10 +35,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
 
     public class MoviesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected final ImageView movieIcon;
+        protected final ImageView favoriteMark;
 
         public MoviesAdapterViewHolder(View itemView) {
             super(itemView);
             movieIcon = (ImageView) itemView.findViewById(R.id.iv_movie_icon);
+            favoriteMark = (ImageView) itemView.findViewById(R.id.iv_favorite_mark);
             itemView.setOnClickListener(this);
         }
 
@@ -59,9 +61,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
 
     @Override
     public void onBindViewHolder(MoviesAdapterViewHolder holder, int position) {
+        Movie movie = data.get(position);
+
         ImageView movieIcon = holder.movieIcon;
-        String posterPath = data.get(position).getFullPosterPath();
+        String posterPath = movie.getFullPosterPath();
         Picasso.with(movieIcon.getContext()).load(posterPath).into(movieIcon);
+
+        holder.favoriteMark.setVisibility(movie.isFavorite() ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override

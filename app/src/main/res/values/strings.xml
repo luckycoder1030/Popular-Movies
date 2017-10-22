@@ -16,10 +16,13 @@
     <string name="stars_8">★★★★★★★★☆☆</string>
     <string name="stars_9">★★★★★★★★★☆</string>
     <string name="stars_10">★★★★★★★★★★</string>
-    <string name="favorite">Favorite</string>
-    <string name="trailer_description"><xliff:g id="count">%1s</xliff:g> (<xliff:g id="count">%2s</xliff:g>)</string>
+    <string name="favorite">Add to favorite</string>
+    <string name="unfavorite">Remove from favorite</string>
+    <string name="trailer_description"><xliff:g id="count">%1s</xliff:g> (<xliff:g id="lang">%2s</xliff:g>)</string>
     <string name="trailers_caption">Trailers (<xliff:g id="count">%1d</xliff:g>)</string>
     <string name="reviews_caption">Reviews (<xliff:g id="count">%1d</xliff:g>)</string>
     <string name="content_authority">com.example.tanyayuferova.popularmovies</string>
     <string name="favorite_movies">Favorite</string>
+    <string name="favorite_notification"><xliff:g id="name">%1s</xliff:g> is added to favorite</string>
+    <string name="unfavorite_notification"><xliff:g id="name">%1s</xliff:g> is removed from favorite</string>
 </resources>

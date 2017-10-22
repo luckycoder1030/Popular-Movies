@@ -8,4 +8,22 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="FavoriteIconStyle">
+        <item name="android:src">@drawable/ic_star</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:visibility">invisible</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_height">35dp</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textColor">@color/contrastTextColor</item>
+        <item name="android:radius">50dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
 </resources>

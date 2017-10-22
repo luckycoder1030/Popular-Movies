@@ -11,4 +11,8 @@
         android:scaleType="fitStart"
         android:adjustViewBounds="true" />
 
+    <ImageView
+        android:id="@+id/iv_favorite_mark"
+        style="@style/FavoriteIconStyle"/>
+
 </FrameLayout>

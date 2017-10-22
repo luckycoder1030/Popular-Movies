@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.tanyayuferova.popularmovies.data.MovieContract;
 import com.example.tanyayuferova.popularmovies.databinding.ActivityMovieDetailsBinding;
@@ -71,6 +72,7 @@ public class MovieDetails extends AppCompatActivity
         Double doubleVoteAvg = movie.getDoubleVoteAvg();
         binding.tvVoteAvg.setText(String.format("%1.1f", doubleVoteAvg));
         binding.tvVoteStarts.setText(getVoteStarsText(doubleVoteAvg));
+        isFavoriteChanged(movie.isFavorite());
     }
 
     /**
@@ -235,8 +237,10 @@ public class MovieDetails extends AppCompatActivity
     }
 
     public void favoriteBtnOnClick(View view) {
+        String notification = null;
         if(movie.isFavorite()) {
             getContentResolver().delete(MovieContract.MovieEntry.buildMovieUriWithId(movie.getId()), null, null);
+            notification = String.format(getString(R.string.unfavorite_notification), movie.getTitle());
         } else {
             getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, MoviesDataUtils.getContentValues(movie));
             if(movie.getTrailers() != null) {
@@ -251,7 +255,15 @@ public class MovieDetails extends AppCompatActivity
                             MoviesDataUtils.getContentValues(review));
                 }
             }
+            notification = String.format(getString(R.string.favorite_notification), movie.getTitle());
         }
+        Toast.makeText(this, notification, Toast.LENGTH_LONG).show();
         movie.setFavorite(!movie.isFavorite());
+        isFavoriteChanged(movie.isFavorite());
+    }
+
+    protected void isFavoriteChanged(boolean isFavorite) {
+        binding.ivFavorite.setVisibility(isFavorite ? View.VISIBLE : View.INVISIBLE);
+        binding.btnFavorite.setText(getString(isFavorite ? R.string.unfavorite : R.string.favorite));
     }
 }
