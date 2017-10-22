@@ -20,4 +20,6 @@
     <string name="trailer_description"><xliff:g id="count">%1s</xliff:g> (<xliff:g id="count">%2s</xliff:g>)</string>
     <string name="trailers_caption">Trailers (<xliff:g id="count">%1d</xliff:g>)</string>
     <string name="reviews_caption">Reviews (<xliff:g id="count">%1d</xliff:g>)</string>
+    <string name="content_authority">com.example.tanyayuferova.popularmovies</string>
+    <string name="favorite_movies">Favorite</string>
 </resources>

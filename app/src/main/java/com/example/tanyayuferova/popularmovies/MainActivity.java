@@ -1,6 +1,7 @@
 package com.example.tanyayuferova.popularmovies;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 
 
 import com.example.tanyayuferova.popularmovies.adapters.MoviesAdapter;
+import com.example.tanyayuferova.popularmovies.data.MovieContract;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
+import com.example.tanyayuferova.popularmovies.utils.MoviesDataUtils;
 import com.example.tanyayuferova.popularmovies.utils.MoviesJsonUtils;
 import com.example.tanyayuferova.popularmovies.utils.NetworkUtils;
 import com.example.tanyayuferova.popularmovies.utils.NetworkUtils.SortingParam;
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity
      */
     protected void loadMoreData() {
         /* Page must be less than or equal to 1000 */
-        if(++currentPage > 1000)
+        if(SortingParam.FAVORITE.equals(currentSorting) || ++currentPage > 1000)
             return;
         getSupportLoaderManager().getLoader(MOVIES_LOADER_ID).forceLoad();
     }
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -107,6 +110,11 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.top_rated_action :
                 currentSorting = SortingParam.TOP_RATED;
+                refreshData();
+                return true;
+
+            case R.id.favorite_movies_action :
+                currentSorting = SortingParam.FAVORITE;
                 refreshData();
                 return true;
 
@@ -153,11 +161,38 @@ public class MainActivity extends AppCompatActivity
             }
             @Override
             public List<Movie> loadInBackground() {
+                Cursor moviesCursor = getContentResolver().query(
+                        MovieContract.MovieEntry.CONTENT_URI,
+                        null, null, null, null);
+
+                List<Movie> favoriteMovies = MoviesDataUtils.createMoviesListFromCursor(moviesCursor);
+
+                for (Movie movie : favoriteMovies) {
+                    Cursor reviews = getContentResolver().query(
+                            MovieContract.ReviewEntry.buildReviewsUriWithMovieId(movie.getId()),
+                            null, null, null, null);
+                    movie.setReviews(MoviesDataUtils.createReviewsListFromCursor(reviews));
+                    Cursor trailers = getContentResolver().query(
+                            MovieContract.TrailerEntry.buildTrailersUriWithMovieId(movie.getId()),
+                            null, null, null, null);
+                    movie.setTrailers(MoviesDataUtils.createTrailersListFromCursor(trailers));
+                }
+
+                if (SortingParam.FAVORITE.equals(currentSorting)) {
+                    return favoriteMovies;
+                }
+
                 URL url = NetworkUtils.buildMoviesUrl(currentSorting, currentPage);
 
                 try {
                     String json = NetworkUtils.getResponseFromHttpUrl(url);
-                    return MoviesJsonUtils.getMoviesDataFromJson(json);
+                    List<Movie> result = MoviesJsonUtils.getMoviesDataFromJson(json);
+                    for(Movie m : result) {
+                        if(favoriteMovies.contains(m)){
+                            m.setFavorite(true);
+                        }
+                    }
+                    return result;
 
                 } catch (Exception e) {
                     e.printStackTrace();

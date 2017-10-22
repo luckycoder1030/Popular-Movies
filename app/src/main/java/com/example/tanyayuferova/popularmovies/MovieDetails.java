@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.tanyayuferova.popularmovies.data.MovieContract;
 import com.example.tanyayuferova.popularmovies.databinding.ActivityMovieDetailsBinding;
 import com.example.tanyayuferova.popularmovies.entities.Movie;
 import com.example.tanyayuferova.popularmovies.entities.Review;
 import com.example.tanyayuferova.popularmovies.entities.Trailer;
+import com.example.tanyayuferova.popularmovies.utils.MoviesDataUtils;
 import com.example.tanyayuferova.popularmovies.utils.MoviesJsonUtils;
 import com.example.tanyayuferova.popularmovies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -230,5 +232,26 @@ public class MovieDetails extends AppCompatActivity
                 }
             }
         });
+    }
+
+    public void favoriteBtnOnClick(View view) {
+        if(movie.isFavorite()) {
+            getContentResolver().delete(MovieContract.MovieEntry.buildMovieUriWithId(movie.getId()), null, null);
+        } else {
+            getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, MoviesDataUtils.getContentValues(movie));
+            if(movie.getTrailers() != null) {
+                for (Trailer trailer : movie.getTrailers()) {
+                    getContentResolver().insert(MovieContract.TrailerEntry.buildTrailersUriWithMovieId(movie.getId()),
+                            MoviesDataUtils.getContentValues(trailer));
+                }
+            }
+            if(movie.getReviews() != null) {
+                for(Review review : movie.getReviews()) {
+                    getContentResolver().insert(MovieContract.ReviewEntry.buildReviewsUriWithMovieId(movie.getId()),
+                            MoviesDataUtils.getContentValues(review));
+                }
+            }
+        }
+        movie.setFavorite(!movie.isFavorite());
     }
 }

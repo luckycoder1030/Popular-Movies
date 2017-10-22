@@ -27,7 +27,7 @@ public class Movie implements Parcelable {
     private String overview;
     private String originalTitle;
     private String tagline;
-    private Boolean isFavorite = false;
+    private boolean isFavorite = false;
     private List<Trailer> trailers;
     private List<Review> reviews;
 
@@ -118,11 +118,11 @@ public class Movie implements Parcelable {
         this.reviews = reviews;
     }
 
-    public Boolean getFavorite() {
+    public boolean isFavorite() {
         return isFavorite;
     }
 
-    public void setFavorite(Boolean favorite) {
+    public void setFavorite(boolean favorite) {
         isFavorite = favorite;
     }
 
@@ -168,7 +168,7 @@ public class Movie implements Parcelable {
     }
 
     public void writeToParcel(Parcel parcel, int flags) {
-        String[] array = new String[8];
+        String[] array = new String[9];
         array[0] = id;
         array[1] = posterPath;
         array[2] = title;
@@ -177,10 +177,10 @@ public class Movie implements Parcelable {
         array[5] = overview;
         array[6] = originalTitle;
         array[7] = tagline;
+        array[8] = String.valueOf(isFavorite);
         parcel.writeStringArray(array);
         parcel.writeList(trailers);
         parcel.writeList(reviews);
-        //parcel.writeByte((byte) (isFavorite ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
@@ -194,7 +194,7 @@ public class Movie implements Parcelable {
     };
 
     private Movie(Parcel parcel) {
-        String[] array = new String[8];
+        String[] array = new String[9];
         parcel.readStringArray(array);
         id = array[0];
         posterPath = array[1];
@@ -209,8 +209,7 @@ public class Movie implements Parcelable {
         overview = array[5];
         originalTitle = array[6];
         tagline = array[7];
-
-        //isFavorite = parcel.readByte() == 1;
+        isFavorite = Boolean.parseBoolean(array[8]);
 
         trailers = new ArrayList<>();
         parcel.readList(trailers, Trailer.class.getClassLoader());

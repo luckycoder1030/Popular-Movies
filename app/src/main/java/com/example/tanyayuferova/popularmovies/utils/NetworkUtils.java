@@ -33,7 +33,8 @@ public class NetworkUtils {
      */
     public enum SortingParam {
         POPULAR("popular"),
-        TOP_RATED("top_rated");
+        TOP_RATED("top_rated"),
+        FAVORITE("favorite");
 
         private String id;
 
