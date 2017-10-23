@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/horizontal_middle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+
+        <android.support.constraint.Guideline
+            android:id="@+id/horizontal_middle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.66" />
+
+        <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitEnd"
+            app:layout_constraintEnd_toStartOf="@+id/horizontal_middle1"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_favorite"
+            style="@style/FavoriteIconStyle"
+            app:layout_constraintEnd_toEndOf="@+id/iv_poster"
+            app:layout_constraintTop_toTopOf="@+id/iv_poster" />
+
+        <TextView
+            android:id="@+id/tv_tag_line"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingEnd="10dp"
+            android:paddingTop="10dp"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/horizontal_middle2"
+            app:layout_constraintStart_toStartOf="@+id/horizontal_middle1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="This is tagline" />
+
+        <TextView
+            android:id="@+id/tv_vote_avg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_vote_starts"
+            app:layout_constraintEnd_toEndOf="@+id/horizontal_middle2"
+            app:layout_constraintStart_toStartOf="@+id/horizontal_middle1"
+            tools:text="9" />
+
+        <TextView
+            android:id="@+id/tv_vote_starts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_favorite"
+            app:layout_constraintEnd_toEndOf="@+id/horizontal_middle2"
+            app:layout_constraintStart_toStartOf="@+id/horizontal_middle1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tag_line"
+            tools:text="@string/stars_9" />
+
+        <Button
+            android:id="@+id/btn_favorite"
+            style="@style/ButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="favoriteBtnOnClick"
+            android:text="@string/favorite"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
+            app:layout_constraintEnd_toEndOf="@+id/horizontal_middle2"
+            app:layout_constraintStart_toStartOf="@+id/horizontal_middle1" />
+
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/horizontal_middle2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Overview" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

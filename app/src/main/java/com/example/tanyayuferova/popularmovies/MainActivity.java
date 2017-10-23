@@ -1,6 +1,7 @@
 package com.example.tanyayuferova.popularmovies;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -57,7 +58,10 @@ public class MainActivity extends AppCompatActivity
         progressBar = (ProgressBar) findViewById(R.id.pb_progress);
         errorMessage = (TextView) findViewById(R.id.tv_error_message);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        int gridColumns = 2;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            gridColumns = 3;
+        GridLayoutManager layoutManager = new GridLayoutManager(this, gridColumns);
         moviesRV.setLayoutManager(layoutManager);
         moviesAdapter = new MoviesAdapter(this);
         moviesRV.setAdapter(moviesAdapter);

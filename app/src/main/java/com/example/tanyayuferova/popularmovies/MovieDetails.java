@@ -67,11 +67,11 @@ public class MovieDetails extends AppCompatActivity
     protected void displayMovieData(Movie movie) {
         this.movie = movie;
         binding.tvTitle.setText(movie.getDescription());
-        binding.tvOverview.setText(movie.getOverview());
-        Picasso.with(this).load(movie.getFullPosterPath()).into(binding.ivPoster);
+        binding.mainData.tvOverview.setText(movie.getOverview());
+        Picasso.with(this).load(movie.getFullPosterPath()).into(binding.mainData.ivPoster);
         Double doubleVoteAvg = movie.getDoubleVoteAvg();
-        binding.tvVoteAvg.setText(String.format("%1.1f", doubleVoteAvg));
-        binding.tvVoteStarts.setText(getVoteStarsText(doubleVoteAvg));
+        binding.mainData.tvVoteAvg.setText(String.format("%1.1f", doubleVoteAvg));
+        binding.mainData.tvVoteStarts.setText(getVoteStarsText(doubleVoteAvg));
         isFavoriteChanged(movie.isFavorite());
     }
 
@@ -80,7 +80,7 @@ public class MovieDetails extends AppCompatActivity
      * @param movie
      */
     protected void displayAdditionalMovieData(Movie movie) {
-        binding.tvTagLine.setText(movie.getTagline());
+        binding.mainData.tvTagLine.setText(movie.getTagline());
         String trailersCaption = String.format(getString(R.string.trailers_caption),
                 movie.getTrailers()==null ? 0 :movie.getTrailers().size());
         String reviewsCaption = String.format(getString(R.string.reviews_caption),
@@ -263,7 +263,7 @@ public class MovieDetails extends AppCompatActivity
     }
 
     protected void isFavoriteChanged(boolean isFavorite) {
-        binding.ivFavorite.setVisibility(isFavorite ? View.VISIBLE : View.INVISIBLE);
-        binding.btnFavorite.setText(getString(isFavorite ? R.string.unfavorite : R.string.favorite));
+        binding.mainData.ivFavorite.setVisibility(isFavorite ? View.VISIBLE : View.INVISIBLE);
+        binding.mainData.btnFavorite.setText(getString(isFavorite ? R.string.unfavorite : R.string.favorite));
     }
 }
