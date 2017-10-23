@@ -36,6 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
             tools:text="Review content"
             android:textSize="18sp"/>
 

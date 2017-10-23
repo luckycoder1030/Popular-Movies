@@ -65,7 +65,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
 
         ImageView movieIcon = holder.movieIcon;
         String posterPath = movie.getFullPosterPath();
-        Picasso.with(movieIcon.getContext()).load(posterPath).into(movieIcon);
+        Picasso.with(movieIcon.getContext())
+                .load(posterPath)
+                .error(R.drawable.ic_question_mark)
+                .into(movieIcon);
 
         holder.favoriteMark.setVisibility(movie.isFavorite() ? View.VISIBLE : View.INVISIBLE);
     }

@@ -31,9 +31,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:adjustViewBounds="true"
-            android:scaleType="fitEnd"
             app:layout_constraintEnd_toStartOf="@+id/horizontal_middle1"
-            app:layout_constraintHeight_default="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@mipmap/ic_launcher" />

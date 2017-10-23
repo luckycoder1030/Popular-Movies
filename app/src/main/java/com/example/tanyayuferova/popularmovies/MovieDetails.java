@@ -68,7 +68,10 @@ public class MovieDetails extends AppCompatActivity
         this.movie = movie;
         binding.tvTitle.setText(movie.getDescription());
         binding.mainData.tvOverview.setText(movie.getOverview());
-        Picasso.with(this).load(movie.getFullPosterPath()).into(binding.mainData.ivPoster);
+        Picasso.with(this)
+                .load(movie.getFullPosterPath())
+                .error(R.drawable.ic_question_mark)
+                .into(binding.mainData.ivPoster);
         Double doubleVoteAvg = movie.getDoubleVoteAvg();
         binding.mainData.tvVoteAvg.setText(String.format("%1.1f", doubleVoteAvg));
         binding.mainData.tvVoteStarts.setText(getVoteStarsText(doubleVoteAvg));

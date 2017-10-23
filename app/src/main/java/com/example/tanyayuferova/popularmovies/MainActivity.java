@@ -80,12 +80,16 @@ public class MainActivity extends AppCompatActivity
     /**
      * Load the next page of movies list
      */
+    /* TODO Think how to load more data
     protected void loadMoreData() {
+     */
         /* Page must be less than or equal to 1000 */
+     /*
         if(SortingParam.FAVORITE.equals(currentSorting) || ++currentPage > 1000)
             return;
-        getSupportLoaderManager().getLoader(MOVIES_LOADER_ID).forceLoad();
+        getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, null, this);
     }
+    */
 
     protected void showDataView() {
         errorMessage.setVisibility(View.INVISIBLE);
@@ -123,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                 return true;
 
             case R.id.load_more_action :
-                loadMoreData();
+                //loadMoreData();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -216,7 +220,7 @@ public class MainActivity extends AppCompatActivity
         progressBar.setVisibility(View.INVISIBLE);
         if (data != null) {
             showDataView();
-            moviesAdapter.addData(data);
+            moviesAdapter.setData(data);
         } else {
             showErrorMessage();
         }

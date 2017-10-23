@@ -5,7 +5,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
 
         <android.support.constraint.Guideline
             android:id="@+id/horizontal_middle"
@@ -17,14 +18,13 @@
         <ImageView
             android:id="@+id/iv_poster"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="280dp"
+            app:layout_constraintHeight_default="wrap"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
             android:adjustViewBounds="true"
-            android:scaleType="fitStart"
             app:layout_constraintEnd_toStartOf="@+id/horizontal_middle"
-            app:layout_constraintHeight_default="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@mipmap/ic_launcher"/>
@@ -89,7 +89,9 @@
             android:id="@+id/tv_overview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
