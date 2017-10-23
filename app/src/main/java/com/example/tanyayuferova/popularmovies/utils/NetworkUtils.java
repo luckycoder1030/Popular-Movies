@@ -161,6 +161,11 @@ public class NetworkUtils {
         }
     }
 
+    /**
+     * Builds uri for YouTube site
+     * @param videoKey YouTube video code
+     * @return
+     */
     public static Uri getYouTubeVideoUri(String videoKey) {
         return Uri.parse(YOU_TUBE_WATCH_URL).buildUpon()
                 .appendQueryParameter(YOU_TUBE_VIDEO_PARAM, videoKey)

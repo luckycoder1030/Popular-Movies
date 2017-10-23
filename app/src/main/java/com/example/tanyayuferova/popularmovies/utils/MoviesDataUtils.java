@@ -18,8 +18,16 @@ import java.util.List;
  * Created by Tanya Yuferova on 10/21/2017.
  */
 
+/**
+ * Helper to provide data for content provider
+ */
 public class MoviesDataUtils {
 
+    /**
+     * Converts cursor to Movies list. Only for favorite movies
+     * @param cursor
+     * @return
+     */
     public static List<Movie> createMoviesListFromCursor(Cursor cursor) {
         List<Movie> result = new ArrayList<>();
         if(cursor.moveToFirst()) {
@@ -46,6 +54,11 @@ public class MoviesDataUtils {
         return result;
     }
 
+    /**
+     * Converts cursor to Trailers list
+     * @param cursor
+     * @return
+     */
     public static List<Trailer> createTrailersListFromCursor(Cursor cursor) {
         List<Trailer> result = new ArrayList<>();
         if(cursor.moveToFirst()) {
@@ -63,6 +76,11 @@ public class MoviesDataUtils {
         return result;
     }
 
+    /**
+     * Converts cursor to Reviews list
+     * @param cursor
+     * @return
+     */
     public static List<Review> createReviewsListFromCursor(Cursor cursor) {
         List<Review> result = new ArrayList<>();
         if(cursor.moveToFirst()) {
@@ -79,6 +97,11 @@ public class MoviesDataUtils {
         return result;
     }
 
+    /**
+     * Creates content values from movie
+     * @param movie
+     * @return
+     */
     public static ContentValues getContentValues(Movie movie) {
         ContentValues result = new ContentValues();
         result.put(MovieEntry._ID, Long.parseLong(movie.getId()));
@@ -92,6 +115,11 @@ public class MoviesDataUtils {
         return result;
     }
 
+    /**
+     * Creates content values from trailer
+     * @param trailer
+     * @return
+     */
     public static ContentValues getContentValues(Trailer trailer) {
         ContentValues result = new ContentValues();
         result.put(TrailerEntry.COLUMN_ID, trailer.getId());
@@ -102,6 +130,11 @@ public class MoviesDataUtils {
         return result;
     }
 
+    /**
+     * Created content values from Review
+     * @param review
+     * @return
+     */
     public static ContentValues getContentValues(Review review) {
         ContentValues result = new ContentValues();
         result.put(ReviewEntry.COLUMN_ID, review.getId());

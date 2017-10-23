@@ -7,7 +7,11 @@ import android.provider.BaseColumns;
  * Created by Tanya Yuferova on 10/21/2017.
  */
 
+/**
+ * Description of tables and content provider data
+ */
 public class MovieContract {
+
     public static final String CONTENT_AUTHORITY = "com.example.tanyayuferova.popularmovies";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_FAVORITE_MOVIES = "favoritemovies";
@@ -15,6 +19,9 @@ public class MovieContract {
     public static final String PATH_REVIEWS = "reviews";
 
 
+    /**
+     * Movie table
+     */
     public static final class MovieEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
@@ -31,6 +38,11 @@ public class MovieContract {
         public static final String COLUMN_ORIGINAL_TITLE = "orig_title";
         public static final String COLUMN_TAGLINE = "tagline";
 
+        /**
+         * Builds url to select movie with particular id
+         * @param id
+         * @return
+         */
         public static Uri buildMovieUriWithId(String id) {
             return CONTENT_URI.buildUpon()
                     .appendPath(id)
@@ -38,7 +50,11 @@ public class MovieContract {
         }
     }
 
+    /**
+     * Trailer table
+     */
     public static final class TrailerEntry implements BaseColumns {
+
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_FAVORITE_MOVIES)
                 .appendPath(PATH_TRAILERS)
@@ -53,6 +69,11 @@ public class MovieContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_SITE = "site";
 
+        /**
+         * Builds uri to select trailers related to particular movie
+         * @param id movie id
+         * @return
+         */
         public static Uri buildTrailersUriWithMovieId(String id) {
             return CONTENT_URI.buildUpon()
                     .appendPath(id)
@@ -60,6 +81,9 @@ public class MovieContract {
         }
     }
 
+    /**
+     * Review table
+     */
     public static final class ReviewEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_FAVORITE_MOVIES)
@@ -74,6 +98,11 @@ public class MovieContract {
         public static final String COLUMN_CONTENT = "content";
         public static final String COLUMN_URL = "url";
 
+        /**
+         * Builds uri to select reviews related to particular movie
+         * @param id movie id
+         * @return
+         */
         public static Uri buildReviewsUriWithMovieId(String id) {
             return CONTENT_URI.buildUpon()
                     .appendPath(id)

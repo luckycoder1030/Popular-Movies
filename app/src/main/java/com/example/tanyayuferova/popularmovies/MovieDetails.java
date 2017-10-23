@@ -147,6 +147,11 @@ public class MovieDetails extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Checks if all data we need is loaded
+     * @param movie
+     * @return true - not all data is loaded, false - all data is loaded
+     */
     protected boolean isLoaderNeeded(Movie movie) {
         return movie.getTagline() == null || movie.getReviews() == null || movie.getTrailers() == null;
     }
@@ -212,12 +217,14 @@ public class MovieDetails extends AppCompatActivity
     }
 
     public void trailersCaptionOnClick(View view) {
+        /* Show full view of trailers */
         Intent intent = new Intent(this, TrailersActivity.class);
         intent.putExtra(MainActivity.EXTRA_MOVIE, movie);
         startActivity(intent);
     }
 
     public void reviewsCaptionOnClick(View view) {
+        /* Show full view of reviews */
         Intent intent = new Intent(this, ReviewsActivity.class);
         intent.putExtra(MainActivity.EXTRA_MOVIE, movie);
         startActivity(intent);
@@ -242,9 +249,12 @@ public class MovieDetails extends AppCompatActivity
     public void favoriteBtnOnClick(View view) {
         String notification = null;
         if(movie.isFavorite()) {
+            /* Delete from favorite */
             getContentResolver().delete(MovieContract.MovieEntry.buildMovieUriWithId(movie.getId()), null, null);
             notification = String.format(getString(R.string.unfavorite_notification), movie.getTitle());
+            /* We do not need to delete trailers and reviews because they would be deleted in cascade */
         } else {
+            /* Add to favorite */
             getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, MoviesDataUtils.getContentValues(movie));
             if(movie.getTrailers() != null) {
                 for (Trailer trailer : movie.getTrailers()) {
@@ -265,6 +275,10 @@ public class MovieDetails extends AppCompatActivity
         isFavoriteChanged(movie.isFavorite());
     }
 
+    /**
+     * When isFavorite movie variable has changed
+     * @param isFavorite
+     */
     protected void isFavoriteChanged(boolean isFavorite) {
         binding.mainData.ivFavorite.setVisibility(isFavorite ? View.VISIBLE : View.INVISIBLE);
         binding.mainData.btnFavorite.setText(getString(isFavorite ? R.string.unfavorite : R.string.favorite));

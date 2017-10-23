@@ -13,6 +13,9 @@ import static com.example.tanyayuferova.popularmovies.data.MovieContract.*;
  * Created by Tanya Yuferova on 10/21/2017.
  */
 
+/**
+ * Content provider
+ */
 public class FavoriteMoviesProvider extends ContentProvider {
     public static final int CODE_FAVORITE_MOVIES = 100;
     public static final int CODE_FAVORITE_MOVIE_WITH_ID = 101;
@@ -24,9 +27,13 @@ public class FavoriteMoviesProvider extends ContentProvider {
     public static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = CONTENT_AUTHORITY;
+        /* All movies */
         matcher.addURI(authority, PATH_FAVORITE_MOVIES, CODE_FAVORITE_MOVIES);
+        /* Movie with id */
         matcher.addURI(authority, PATH_FAVORITE_MOVIES + "/#", CODE_FAVORITE_MOVIE_WITH_ID);
+        /* Movie trailers with movie id */
         matcher.addURI(authority, PATH_FAVORITE_MOVIES + "/" + PATH_TRAILERS + "/#", CODE_TRAILERS_WITH_MOVIE_ID);
+        /* Movie reviews with movie id */
         matcher.addURI(authority, PATH_FAVORITE_MOVIES + "/" + PATH_REVIEWS + "/#", CODE_REVIEWS_WITH_MOVIE_ID);
         return matcher;
     }
@@ -53,6 +60,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
+
             case CODE_FAVORITE_MOVIE_WITH_ID: {
                 String[] selectionArguments = new String[]{uri.getLastPathSegment()};
                 cursor = dbHelper.getReadableDatabase().query(
@@ -65,6 +73,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
+
             case CODE_TRAILERS_WITH_MOVIE_ID: {
                 String[] selectionArguments = new String[]{uri.getLastPathSegment()};
                 cursor = dbHelper.getReadableDatabase().query(
@@ -77,6 +86,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
+
             case CODE_REVIEWS_WITH_MOVIE_ID: {
                 String[] selectionArguments = new String[]{uri.getLastPathSegment()};
                 cursor = dbHelper.getReadableDatabase().query(
@@ -89,6 +99,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -110,6 +121,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
                 }
                 break;
             }
+
             case CODE_REVIEWS_WITH_MOVIE_ID: {
                 String movieId = uri.getLastPathSegment();
                 values.put(ReviewEntry.COLUMN_MOVIE_ID, movieId);
@@ -122,6 +134,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
                 }
                 break;
             }
+
             case CODE_TRAILERS_WITH_MOVIE_ID: {
                 String movieId = uri.getLastPathSegment();
                 values.put(TrailerEntry.COLUMN_MOVIE_ID, movieId);
@@ -153,7 +166,9 @@ public class FavoriteMoviesProvider extends ContentProvider {
                         MovieEntry.TABLE_NAME,
                         MovieEntry._ID + " = ? ",
                         selectionArguments);
+                /* Trailers and reviews would delete in cascade */
                 break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity
             }
             @Override
             public List<Movie> loadInBackground() {
+                /* Load favorite movies from content provider */
                 Cursor moviesCursor = getContentResolver().query(
                         MovieContract.MovieEntry.CONTENT_URI,
                         null, null, null, null);
@@ -176,10 +177,13 @@ public class MainActivity extends AppCompatActivity
                 List<Movie> favoriteMovies = MoviesDataUtils.createMoviesListFromCursor(moviesCursor);
 
                 for (Movie movie : favoriteMovies) {
+                    /* Loads reviews for each movie from content provider */
                     Cursor reviews = getContentResolver().query(
                             MovieContract.ReviewEntry.buildReviewsUriWithMovieId(movie.getId()),
                             null, null, null, null);
                     movie.setReviews(MoviesDataUtils.createReviewsListFromCursor(reviews));
+
+                    /* Loads trailers for each movie from content provider */
                     Cursor trailers = getContentResolver().query(
                             MovieContract.TrailerEntry.buildTrailersUriWithMovieId(movie.getId()),
                             null, null, null, null);
@@ -195,6 +199,7 @@ public class MainActivity extends AppCompatActivity
                 try {
                     String json = NetworkUtils.getResponseFromHttpUrl(url);
                     List<Movie> result = MoviesJsonUtils.getMoviesDataFromJson(json);
+                    /* We need to find favorite movies in list and mark them as favorite */
                     for(Movie m : result) {
                         if(favoriteMovies.contains(m)){
                             m.setFavorite(true);

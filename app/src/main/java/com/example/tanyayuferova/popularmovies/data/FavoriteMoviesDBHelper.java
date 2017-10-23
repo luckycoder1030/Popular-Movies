@@ -11,6 +11,9 @@ import com.example.tanyayuferova.popularmovies.data.MovieContract.*;
  * Created by Tanya Yuferova on 10/21/2017.
  */
 
+/**
+ * Works with data base
+ */
 public class FavoriteMoviesDBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "movies.db";
